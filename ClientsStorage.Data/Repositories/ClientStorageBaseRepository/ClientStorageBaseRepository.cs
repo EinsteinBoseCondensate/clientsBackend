@@ -2,11 +2,6 @@
 using ClientsStorage.Data.Repositories.GenericRepository;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClientsStorage.Data.Repositories
 {

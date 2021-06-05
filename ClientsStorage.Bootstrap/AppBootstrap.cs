@@ -4,13 +4,11 @@ using ClientsStorage.Data.Repositories.ClientRepository;
 using ClientsStorage.Data.Repositories.CountryRepository;
 using ClientsStorage.Domain.Implementations;
 using ClientsStorage.Domain.Interfaces;
-using CountrysStorage.Data.Repositories.CountryRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace ClientsStorage.Bootstrap
 {
@@ -25,6 +23,7 @@ namespace ClientsStorage.Bootstrap
         {
             services.AddDbContext<ClientsStorageDbContext>(option => option.UseSqlServer(configuration.Get<AppConfig>().ConnectionStrings.ClientStorage));
             services.AddTransient<IClientRepository, ClientRepository>();
+            services.AddTransient<ICountryManager, CountryManager>();
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<IClientManager, ClientManager>();
 

@@ -1,5 +1,4 @@
-﻿using ClientsStorage.Data.Entities;
-using ClientsStorage.Data.Repositories.ClientRepository;
+﻿using ClientsStorage.Data.Repositories.ClientRepository;
 using ClientsStorage.Data.Repositories.CountryRepository;
 using ClientsStorage.Domain.Extensions;
 using ClientsStorage.Domain.Interfaces;
@@ -9,7 +8,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ClientsStorage.Domain.Implementations
@@ -43,6 +41,7 @@ namespace ClientsStorage.Domain.Implementations
             catch (Exception e)
             {
                 _logger?.LogError(e, $"Exception creating client for dto: {JsonConvert.SerializeObject(dto)}");
+                throw;
             }
             return new CRUDResult
             {
@@ -65,6 +64,7 @@ namespace ClientsStorage.Domain.Implementations
             catch (Exception e)
             {
                 _logger?.LogError(e, $"Exception removing client for userId: {userId}");
+                throw;
             }
             return new CRUDResult
             {
@@ -89,6 +89,7 @@ namespace ClientsStorage.Domain.Implementations
             catch (Exception e)
             {
                 _logger?.LogError(e, $"Exception editing client for userId: {JsonConvert.SerializeObject(dto)}");
+                throw;
             }
             return new CRUDResult
             {
@@ -100,13 +101,13 @@ namespace ClientsStorage.Domain.Implementations
         {
             try
             {
-                return (await _clientRepository.GetManyBy(c => true)).Select(client => client.ToClientDto()).ToList();
+                return (await _clientRepository.GetManyAndConvertByAfter(c => true, c=> c, includes: c => c.Country)).Select(client => client.ToClientDto()).ToList();
             }
             catch (Exception e)
             {
                 _logger?.LogError(e, $"Exception getting clients for userId: {JsonConvert.SerializeObject(dto)}");
+                throw;
             }
-            return default;
         }
     }
 }

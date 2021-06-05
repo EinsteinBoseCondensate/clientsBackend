@@ -50,7 +50,7 @@ namespace ClientsStorage.Root
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseCors(bdr => bdr.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

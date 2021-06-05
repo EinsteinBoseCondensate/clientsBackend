@@ -18,7 +18,7 @@ namespace ClientsStorage.Domain.Extensions
                 Address = dto.Address,
                 Country = country,
                 DateOfBirth = dto.DateOfBirth,
-                Gender = dto.Gender,
+                Gender = (Gender)dto.Gender,
                 Name = dto.Name,
                 PostalCode = dto.PostalCode,
                 Surname = dto.Surname
@@ -30,7 +30,7 @@ namespace ClientsStorage.Domain.Extensions
             client.Address = dto.Address;
             client.Country = country;
             client.DateOfBirth = dto.DateOfBirth;
-            client.Gender = dto.Gender;
+            client.Gender = (Gender)dto.Gender;
             client.Name = dto.Name;
             client.PostalCode = dto.PostalCode;
             client.Surname = dto.Surname;
@@ -44,7 +44,7 @@ namespace ClientsStorage.Domain.Extensions
                 Address = client.Address,
                 CountryId = client.Country.Id.ToString(),
                 DateOfBirth = client.DateOfBirth,
-                Gender = client.Gender,
+                Gender = (int)client.Gender,
                 Name = client.Name,
                 PostalCode = client.PostalCode,
                 Surname = client.Surname
