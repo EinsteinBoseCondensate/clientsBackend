@@ -3,6 +3,7 @@ using ClientsStorage.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ClientsStorage.Root.Controllers
@@ -35,7 +36,7 @@ namespace ClientsStorage.Root.Controllers
             }
             catch//Manager logs the exception and rethrows it
             {
-                return BadRequest("Server error");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Server error");
             }
         }
         [HttpPost]
@@ -47,7 +48,7 @@ namespace ClientsStorage.Root.Controllers
             }
             catch//Manager logs the exception and rethrows it
             {
-                return BadRequest("Server error");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Server error");
             }
         }
         [HttpPut]
@@ -58,8 +59,8 @@ namespace ClientsStorage.Root.Controllers
                 return Ok(await _clientManager.EditClient(dto));
             }
             catch//Manager logs the exception and rethrows it
-            { 
-                return BadRequest("Server error");
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Server error");
             }
         }
         [HttpDelete("{id}")]
@@ -70,8 +71,8 @@ namespace ClientsStorage.Root.Controllers
                 return Ok(await _clientManager.DeleteClient(id));
             }
             catch//Manager logs the exception and rethrows it
-            { 
-                return BadRequest("Server error");
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Server error");
             }
         }
 
@@ -85,7 +86,7 @@ namespace ClientsStorage.Root.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while fetching countries");
-                return BadRequest("Server error");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Server error");
             }
         }
 
