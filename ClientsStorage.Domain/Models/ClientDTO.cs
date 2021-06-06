@@ -9,15 +9,15 @@ namespace ClientsStorage.Domain.Models
 {
     public class ClientDTO
     {
-            public string Id { get; set; }
-            public string Name { get; set; }
-            public string Surname { get; set; }
-            public int Gender { get; set; }
-            public DateTime DateOfBirth { get; set; }
-            public string Address { get; set; }
-            public string CountryId { get; set; }
-            public string PostalCode { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public int Gender { get; set; } = 1000;
+        public DateTime DateOfBirth { get; set; }
+        public string Address { get; set; }
+        public string CountryId { get; set; }
+        public string PostalCode { get; set; }
 
-        
+
     }
 }

@@ -97,11 +97,11 @@ namespace ClientsStorage.Domain.Implementations
             };
         }
 
-        public async Task<List<ClientDTO>> GetClients(ClientDTO dto)
+        public async Task<List<ClientDTO>> GetClients(ClientFilterDTO dto)
         {
             try
             {
-                return (await _clientRepository.GetManyAndConvertByAfter(c => true, c=> c, includes: c => c.Country)).Select(client => client.ToClientDto()).ToList();
+                return (await _clientRepository.GetManyAndConvertByAfter(dto.ToExpression(), c=> c, includes: c => c.Country)).Select(client => client.ToClientDto()).ToList();
             }
             catch (Exception e)
             {

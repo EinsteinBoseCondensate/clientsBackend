@@ -27,12 +27,12 @@ namespace ClientsStorage.Root.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpPost("get")]
+        public async Task<IActionResult> Get([FromBody] ClientFilterDTO dto)
         {
             try
             {
-                return Ok(await _clientManager.GetClients(default));
+                return Ok(await _clientManager.GetClients(dto));
             }
             catch//Manager logs the exception and rethrows it
             {
