@@ -8,7 +8,7 @@ namespace ClientsStorage.Domain.Models
 {
     public class ClientFilterDTO : ClientDTO
     {
-        public DateTime From { get; set; }
-        public DateTime To { get; set; }
+        public DateTime? From { get; set; }
+        public DateTime? To { get; set; }
     }
 }

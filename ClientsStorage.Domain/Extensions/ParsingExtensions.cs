@@ -55,21 +55,21 @@ namespace ClientsStorage.Domain.Extensions
         public static Expression<Func<Client, bool>> ToExpression(this ClientFilterDTO client)
         {
             Expression<Func<Client, bool>> expressionResult = c => true;
-            if (!string.IsNullOrEmpty(client?.Name?.Trim()))
+            if (!string.IsNullOrEmpty(client.Name?.Trim()))
                 expressionResult = expressionResult.And(client.GetNameLambda());
-            if (!string.IsNullOrEmpty(client?.Surname?.Trim()))
+            if (!string.IsNullOrEmpty(client.Surname?.Trim()))
                 expressionResult = expressionResult.And(client.GetSurnameLambda());
-            if (!string.IsNullOrEmpty(client?.PostalCode?.Trim()))
+            if (!string.IsNullOrEmpty(client.PostalCode?.Trim()))
                 expressionResult = expressionResult.And(client.GetPostalCodeLambda());
             if (client.Gender >= 0 || client.Gender <= (int)Gender.Ambiguous)
                 expressionResult = expressionResult.And(client.GetGenderLambda());
-            if (!string.IsNullOrEmpty(client?.CountryId?.Trim()))
+            if (!string.IsNullOrEmpty(client.CountryId?.Trim()))
                 expressionResult = expressionResult.And(client.GetCountryLambda());
-            if (!string.IsNullOrEmpty(client?.Address?.Trim()))
+            if (!string.IsNullOrEmpty(client.Address?.Trim()))
                 expressionResult = expressionResult.And(client.GetAddressLambda());
-            if (client.From != default)
+            if (client.From != default && client.From != null)
                 expressionResult = expressionResult.And(client.GetFromDateOfBirthLambda());
-            if (client.To != default)
+            if (client.To != default && client.To != null)
                 expressionResult = expressionResult.And(client.GetToDateOfBirthLambda());
             return expressionResult;
         }
