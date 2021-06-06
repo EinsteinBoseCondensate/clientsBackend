@@ -11,7 +11,21 @@ namespace ClientsStorage.Domain.Extensions
 {
     public static class ParsingExtensions
     {
-        
+        public static bool IsValidToCreate(this ClientDTO client)
+        {
+            return !string.IsNullOrEmpty(client.Address?.Trim())
+                && !string.IsNullOrEmpty(client.CountryId?.Trim())
+                && !string.IsNullOrEmpty(client.Name?.Trim())
+                && !string.IsNullOrEmpty(client.Surname?.Trim())
+                && !string.IsNullOrEmpty(client.PostalCode?.Trim())
+                && client.DateOfBirth != default
+                && client.Gender != ClientDTO.DefaultGenderValue
+                ;
+        }
+        public static bool IsValidToEdit(this ClientDTO client)
+        {
+            return client.IsValidToCreate() && Guid.TryParse(client.Id, out _);
+        }
         public static Client ToNewClient(this ClientDTO dto, Country country)
         {
             return new Client
@@ -19,7 +33,7 @@ namespace ClientsStorage.Domain.Extensions
                 Id = Guid.NewGuid(),
                 Address = dto.Address,
                 Country = country,
-                DateOfBirth = dto.DateOfBirth,
+                DateOfBirth = (DateTime)dto.DateOfBirth,
                 Gender = (Gender)dto.Gender,
                 Name = dto.Name,
                 PostalCode = dto.PostalCode,
@@ -31,7 +45,7 @@ namespace ClientsStorage.Domain.Extensions
 
             client.Address = dto.Address;
             client.Country = country;
-            client.DateOfBirth = dto.DateOfBirth;
+            client.DateOfBirth = (DateTime)dto.DateOfBirth;
             client.Gender = (Gender)dto.Gender;
             client.Name = dto.Name;
             client.PostalCode = dto.PostalCode;
@@ -61,7 +75,7 @@ namespace ClientsStorage.Domain.Extensions
                 expressionResult = expressionResult.And(client.GetSurnameLambda());
             if (!string.IsNullOrEmpty(client.PostalCode?.Trim()))
                 expressionResult = expressionResult.And(client.GetPostalCodeLambda());
-            if (client.Gender >= 0 || client.Gender <= (int)Gender.Ambiguous)
+            if (client.Gender >= 0 && client.Gender <= (int)Gender.Ambiguous)
                 expressionResult = expressionResult.And(client.GetGenderLambda());
             if (!string.IsNullOrEmpty(client.CountryId?.Trim()))
                 expressionResult = expressionResult.And(client.GetCountryLambda());

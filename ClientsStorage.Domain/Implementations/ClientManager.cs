@@ -28,26 +28,32 @@ namespace ClientsStorage.Domain.Implementations
 
         public async Task<CRUDResult> CreateClient(ClientDTO dto)
         {
-            bool result = false;
+
             try
             {
-                var country = await _countryRepository.GetFirstOrDefaultBy(c => c.Id == Guid.Parse(dto.CountryId));
-                if (country != null && country != default)
+                bool result = false;
+                if (dto.IsValidToCreate())
                 {
-                    _clientRepository.InsertEntry(dto.ToNewClient(country));
-                    result = (await _clientRepository.SaveChangesAsync()) == Data.Repositories.GenericRepository.SaveChangesState.OK;
+                    var country = await _countryRepository.GetFirstOrDefaultBy(c => c.Id == Guid.Parse(dto.CountryId));
+                    if (country != null && country != default)
+                    {
+                        _clientRepository.InsertEntry(dto.ToNewClient(country));
+                        result = (await _clientRepository.SaveChangesAsync()) == Data.Repositories.GenericRepository.SaveChangesState.OK;
+                    }
                 }
+                return new CRUDResult
+                {
+                    WasOk = result
+                };
+
             }
             catch (Exception e)
             {
                 _logger?.LogError(e, $"Exception creating client for dto: {JsonConvert.SerializeObject(dto)}");
                 throw;
             }
-            return new CRUDResult
-            {
-                WasOk = result
-            };
         }
+
 
         public async Task<CRUDResult> DeleteClient(string userId)
         {
@@ -77,13 +83,16 @@ namespace ClientsStorage.Domain.Implementations
             bool result = false;
             try
             {
-                var client = await _clientRepository.GetFirstOrDefaultBy(c => c.Id == Guid.Parse(dto.Id));
-                var country = await _countryRepository.GetFirstOrDefaultBy(c => c.Id == Guid.Parse(dto.CountryId));
-                if (client != null && client != default && country != null && country != default)
+                if (dto.IsValidToEdit())
                 {
-                    client.UpdateFromDTOAndCountry(dto, country);
-                    _clientRepository.UpdateEntry(client);
-                    result = (await _clientRepository.SaveChangesAsync()) == Data.Repositories.GenericRepository.SaveChangesState.OK;
+                    var client = await _clientRepository.GetFirstOrDefaultBy(c => c.Id == Guid.Parse(dto.Id));
+                    var country = await _countryRepository.GetFirstOrDefaultBy(c => c.Id == Guid.Parse(dto.CountryId));
+                    if (client != null && client != default && country != null && country != default)
+                    {
+                        client.UpdateFromDTOAndCountry(dto, country);
+                        _clientRepository.UpdateEntry(client);
+                        result = (await _clientRepository.SaveChangesAsync()) == Data.Repositories.GenericRepository.SaveChangesState.OK;
+                    }
                 }
             }
             catch (Exception e)
@@ -101,7 +110,7 @@ namespace ClientsStorage.Domain.Implementations
         {
             try
             {
-                return (await _clientRepository.GetManyAndConvertByAfter(dto.ToExpression(), c=> c, includes: c => c.Country)).Select(client => client.ToClientDto()).ToList();
+                return (await _clientRepository.GetManyAndConvertByAfter(dto.ToExpression(), c => c, includes: c => c.Country)).Select(client => client.ToClientDto()).ToList();
             }
             catch (Exception e)
             {
