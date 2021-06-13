@@ -24,7 +24,10 @@ namespace ClientsStorage.Domain.Extensions
         }
         public static bool IsValidToEdit(this ClientDTO client)
         {
-            return client.IsValidToCreate() && Guid.TryParse(client.Id, out _);
+            return client.IsValidToCreate()
+                && Guid.TryParse(client.Id, out _)
+                && Guid.TryParse(client.CountryId, out _)
+                ;
         }
         public static Client ToNewClient(this ClientDTO dto, Country country)
         {

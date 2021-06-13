@@ -10,5 +10,7 @@ namespace ClientsStorage.Domain.Models
     {
         public DateTime? From { get; set; }
         public DateTime? To { get; set; }
+        public int? Skip { get; set; }
+        public int? Take { get; set; }
     }
 }

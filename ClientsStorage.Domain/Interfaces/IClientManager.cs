@@ -11,7 +11,7 @@ namespace ClientsStorage.Domain.Interfaces
 {
     public interface IClientManager
     {
-        Task<List<ClientDTO>> GetClients(ClientFilterDTO dto);
+        Task<CRUDResult<ClientDTO>> GetClients(ClientFilterDTO dto);
         Task<CRUDResult> DeleteClient(string userId);
         Task<CRUDResult> EditClient(ClientDTO dto);
         Task<CRUDResult> CreateClient(ClientDTO dto);

@@ -259,6 +259,14 @@ namespace ClientsStorage.Data.Repositories.GenericRepository
         {
             Context.ChangeTracker.LazyLoadingEnabled = true;
         }
+        public Task<int> CountAsync(Expression<Func<TEntity, bool>> expression)
+        {
+            return SetQuery(expression).Distinct().CountAsync();
+        }
+        public Task<int> SelectAndCountAsync<K>(Expression<Func<TEntity, bool>> expression, Expression<Func<TEntity, K>> pipe)
+        {
+            return SetQuery(expression).Select(pipe).Distinct().CountAsync();
+        }
         /// <summary>
         /// Save changes to database asynchronously
         /// </summary>

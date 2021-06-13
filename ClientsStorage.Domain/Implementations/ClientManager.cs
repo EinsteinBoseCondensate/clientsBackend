@@ -106,11 +106,22 @@ namespace ClientsStorage.Domain.Implementations
             };
         }
 
-        public async Task<List<ClientDTO>> GetClients(ClientFilterDTO dto)
+        public async Task<CRUDResult<ClientDTO>> GetClients(ClientFilterDTO dto)
         {
+            CRUDResult<ClientDTO> result = new CRUDResult<ClientDTO>();
+            var expression = dto.ToExpression();
             try
             {
-                return (await _clientRepository.GetManyAndConvertByAfter(dto.ToExpression(), c => c, includes: c => c.Country)).Select(client => client.ToClientDto()).ToList();
+                result.Data = await _clientRepository.GetManyAndConvertByAfter(
+                    expression, 
+                    c => c.ToClientDto(), 
+                    orderClause: c => c.DateOfBirth,
+                    skippedIndex: dto.Skip ?? default, 
+                    topResults: dto.Take ?? default, 
+                    includes: c => c.Country
+                    );
+                result.Count = await _clientRepository.SelectAndCountAsync(expression, c => c.Id);
+                return result;
             }
             catch (Exception e)
             {

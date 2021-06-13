@@ -10,4 +10,9 @@ namespace ClientsStorage.Domain.Models
     {
         public bool WasOk { get; set; }
     }
+    public class CRUDResult<T> : CRUDResult
+    {
+        public ICollection<T> Data { get; set; }
+        public int Count { get; set; }
+    }
 }

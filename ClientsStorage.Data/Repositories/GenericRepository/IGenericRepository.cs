@@ -31,6 +31,8 @@ namespace ClientsStorage.Data.Repositories.GenericRepository
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
         Task<ICollection<TEntity>> GetEntitiesByWith(Expression<Func<TEntity, bool>> predicate = null, int skippedIndex = 0, int topResults = 0, Expression<Func<TEntity, object>> orderClause = null, bool ascending = false, params Expression<Func<TEntity, object>>[] includes);
         Task<ICollection<TEntity>> GetEntitiesByWith(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes);
+        Task<int> CountAsync(Expression<Func<TEntity, bool>> expression);
+        Task<int> SelectAndCountAsync<K>(Expression<Func<TEntity, bool>> expression, Expression<Func<TEntity, K>> pipe);
         void SetEntityStateAsUnmodified<K>(K obj);
         Task<SaveChangesState> SaveChangesAsync();
         void OverrideDbContext(T context);
